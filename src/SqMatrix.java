@@ -1,21 +1,40 @@
+/**
+ * @author Manuel Alejandro Martínez Flores
+ * 
+ * SqMatrix.
+ * 
+ * Matriz cuadrada para implementar el grafo.
+ */
 
 import java.util.ArrayList;
 
 public class SqMatrix {
 
-	ArrayList<ArrayList<Float>> data;
+	private ArrayList<ArrayList<Float>> data;
 	final float INF = Float.POSITIVE_INFINITY;
 	final float nINF = Float.NEGATIVE_INFINITY;
-	int size = 0;
+	private int size = 0;
 	
+	/**
+	 * Inicializa matriz vacia
+	 */
 	SqMatrix(){
 		data = new ArrayList<ArrayList<Float>>();
 	}
 	
+	/**
+	 * Inicializa matriz de cierta dimensión
+	 * @param size
+	 */
 	SqMatrix(int size){
 		this(size, false);
 	}
 	
+	/**
+	 * Inicializa matriz de cierta dimensión con opcion a zeros
+	 * @param size
+	 * @param zero
+	 */
 	SqMatrix(int size, boolean zero) {
 		this();
 		for (int i = 0; i < size; i++) {
@@ -33,7 +52,9 @@ public class SqMatrix {
 		this.size = size;
 	}
 	
-	
+	/**
+	 * Añade una columna y fila a la matriz
+	 */
 	public void scale_up() {
 		size = size + 1;
 		for (ArrayList<Float> arr : data) {
@@ -46,6 +67,12 @@ public class SqMatrix {
 		data.add(temp);
 	}
 	
+	/**
+	 * Establece un valor a algún espacio
+	 * @param i fila
+	 * @param j columna
+	 * @param e valor
+	 */
 	public void set(int i, int j, float e) {
 		i--;
 		j--;
@@ -54,14 +81,23 @@ public class SqMatrix {
 		data.set(i, temp);
 	}
 	
+	/**
+	 * Obtiene el valor de algún espacio
+	 * @param i fila
+	 * @param j columna
+	 * @return valor
+	 */
 	public Float get(int i, int j) {
 		i--;
 		j--;
 		return data.get(i).get(j);
 	}
 	
-	
-	public ArrayList<Float> maxArray() {
+	/**
+	 * Genera un array de valores máximos por columna
+	 * @return array
+	 */
+	private ArrayList<Float> maxArray() {
 		ArrayList<Float> maxArr = new ArrayList<Float>();
 		for (int i=0; i<size; i++) {
 			float max = nINF;
@@ -76,6 +112,10 @@ public class SqMatrix {
 		
 	}
 	
+	/**
+	 * Genera el índice mínimo de el maxArray
+	 * @return índice
+	 */
 	public int argmin() {
 		ArrayList<Float> maxArr = maxArray();
 		float min = INF;
@@ -89,6 +129,10 @@ public class SqMatrix {
 		return id;
 	}
 	
+	/**
+	 * Genera una copia
+	 * @return copia
+	 */
 	public SqMatrix copy() {
 		SqMatrix temp = new SqMatrix(size, false);
 		for (int i=1; i<=size; i++) {
@@ -99,23 +143,21 @@ public class SqMatrix {
 		return temp;
 	}
 	
-	
-	private void deleteRow(int i) {
+
+	/**
+	 * Elimina una fila y columna
+	 * @param i fila y columna
+	 */
+	public void deleteRowCol(int i) {
 		data.remove(i);
-	}
-	
-	private void deleteColumn(int i) {
 		for (ArrayList<Float> arr : data) {
 			arr.remove(i);
 		}
 	}
 	
-	public void deleteRowCol(int i) {
-		deleteRow(i);
-		deleteColumn(i);
-	}
-	
-	
+	/**
+	 * Genera String con la matriz
+	 */
 	@Override
 	public String toString() {
 		String txt = "";
