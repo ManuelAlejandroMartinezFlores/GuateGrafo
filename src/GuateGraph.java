@@ -1,18 +1,36 @@
+/**
+ * @author Manuel Alejandro Martínez Flores
+ * 
+ * GuateGraph.
+ * 
+ * Grafo utilizando la matriz de adyacencia.
+ */
+
 
 import java.util.HashMap;
 
 public class GuateGraph {
 
 	
-	SqMatrix matrix;
-	HashMap<String, Integer> ciudad_to_id = new HashMap<>();
-	HashMap<Integer, String> id_to_ciudad = new HashMap<>();
-	int size = 0;
+	private SqMatrix matrix;
+	private HashMap<String, Integer> ciudad_to_id = new HashMap<>();
+	private HashMap<Integer, String> id_to_ciudad = new HashMap<>();
+	private SqMatrix cost;
+	private SqMatrix paths;
+	private int size = 0;
+	private boolean modified = false;
 	
+	/**
+	 * Inicializa grafo vacio
+	 */
 	GuateGraph(){
 		matrix = new SqMatrix();
 	}
 	
+	/**
+	 * Añade un nodo
+	 * @param ciudad
+	 */
 	public void addNode(String ciudad) {
 		if (!ciudad_to_id.containsKey(ciudad)) {
 			size++;
@@ -20,10 +38,18 @@ public class GuateGraph {
 			id_to_ciudad.put(size, ciudad);
 			matrix.scale_up();
 			addEdge(ciudad, ciudad, 0);
+			modified = true;
 		}
+		
 		
 	}
 	
+	/**
+	 * Añade un arco o arista
+	 * @param origen
+	 * @param destino
+	 * @param dist distancia
+	 */
 	public void addEdge(String origen, String destino, float dist) {
 		addNode(origen);
 		addNode(destino);
@@ -31,19 +57,30 @@ public class GuateGraph {
 		int to = ciudad_to_id.get(destino);
 		if (matrix.get(from, to) > dist) {
 			matrix.set(from, to, dist);
+			modified = true;
 		}
 	}
 	
+	/**
+	 * Indica el arco o arista entre dos nodos
+	 * @param origen
+	 * @param destino
+	 * @return arco o arista
+	 */
 	public float getEdge(String origen, String destino) {
 		addNode(origen);
 		addNode(destino);
 		return matrix.get(ciudad_to_id.get(origen), ciudad_to_id.get(destino));
 	}
 	
-	public SqMatrix[] Floyd() {
+	/**
+	 * Algoritmo de Floyd para rutas más cortas
+	 * @return matriz de costo y matriz de rutas
+	 */
+	public void Floyd() {
 		SqMatrix[] ans = new SqMatrix[2];
-		SqMatrix cost = matrix.copy();
-		SqMatrix path = new SqMatrix(size, true);
+		cost = matrix.copy();
+		paths = new SqMatrix(size, true);
 		
 		for (int k=1; k<=size; k++) {
 			for (int i=1; i<=size; i++) {
@@ -51,19 +88,22 @@ public class GuateGraph {
 					if (cost.get(i, j) > cost.get(i, k) + cost.get(k, j)) {
 						cost.set(i, j, cost.get(i, k) + cost.get(k, j));
 						if (i != j) {
-							path.set(i, j, k);
+							paths.set(i, j, k);
 						}
 					}
 				}
 			}
 		}
-		ans[0] = cost;
-		ans[1] = path;
-		return ans;
 	}
 	
+	/**
+	 * Indica el centro del grafo
+	 * @return nodo
+	 */
 	public String centre() {
-		SqMatrix cost = Floyd()[0];
+		if (modified) {
+			Floyd();
+		}
 		int id = cost.argmin();
 		String ciudad = id_to_ciudad.get(id);
 		if (ciudad == null) {
@@ -72,14 +112,19 @@ public class GuateGraph {
 		return "Centro: " + ciudad;
 	}
 	
-	
+	/**
+	 * Indica rutas más cortas
+	 * @param origen
+	 * @param destino
+	 * @return ruta más corta
+	 */
 	public String shortestPath(String origen, String destino) {
 		int from = ciudad_to_id.get(origen);
 		int to = ciudad_to_id.get(destino);
 		
-		
-		SqMatrix[] floyd = Floyd();
-		SqMatrix cost = floyd[0];
+		if (modified) {
+			Floyd();
+		}
 		
 		if (cost.get(from, to) == cost.INF) {
 			return "No existe camino entre " + origen + " y " + destino;
@@ -87,34 +132,52 @@ public class GuateGraph {
 		
 		String txt = "Distancia: " + cost.get(from, to).toString() + "\n";
 		
-		SqMatrix paths = floyd[1];
-		return txt + path(from, to, paths, origen + "->") + destino;
+		return txt + path(from, to, origen + "->") + destino;
 		
 		
 	}
 	
-	private String path(int i, int j, SqMatrix paths, String txt) {
+	/**
+	 * Reconstruye la ruta más corta
+	 * @param i origen
+	 * @param j destino
+	 * @param txt
+	 * @return ruta
+	 */
+	private String path(int i, int j, String txt) {
 		if (paths.get(i, j) != 0) {
-			txt = path(i, (int) paths.get(i, j).floatValue(), paths, txt);
+			txt = path(i, (int) paths.get(i, j).floatValue(), txt);
 			txt += id_to_ciudad.get((int) paths.get(i, j).floatValue()) + "->";
-			txt = path((int) paths.get(i, j).floatValue(), j, paths, txt);
+			txt = path((int) paths.get(i, j).floatValue(), j, txt);
 			return txt;
 		}
 		return txt;
 	}
 	
+	/**
+	 * Elimina un nodo
+	 * @param ciudad
+	 */
 	public void deleteNode(String ciudad) {
 		int id = ciudad_to_id.get(ciudad);
 		matrix.deleteRowCol(id);
+		size--;
 	}
 	
+	/**
+	 * Elimina un arco o arista
+	 * @param origen
+	 * @param destino
+	 */
 	public void deleteEdge(String origen, String destino) {
 		int from = ciudad_to_id.get(origen);
 		int to = ciudad_to_id.get(destino);
 		matrix.set(from, to, matrix.INF);
 	}
 	
-	
+	/**
+	 * Genera un texto con el grafo.
+	 */
 	@Override
 	public String toString() {
 		String txt = "";
@@ -122,5 +185,21 @@ public class GuateGraph {
 			txt += id_to_ciudad.get(i) + ", ";
 		}
 		return txt.substring(0, txt.length() - 2) + "\n" + matrix.toString();
+	}
+	
+	/**
+	 * Indica la matriz de rutas
+	 * @return matriz
+	 */
+	public SqMatrix getPaths() {
+		return paths;
+	}
+	
+	/**
+	 * Indica la matriz de costo
+	 * @return matriz
+	 */
+	public SqMatrix getCost() {
+		return cost;
 	}
 }
