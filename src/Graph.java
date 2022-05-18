@@ -78,7 +78,6 @@ public class Graph {
 	 * @return matriz de costo y matriz de rutas
 	 */
 	public void Floyd() {
-		SqMatrix[] ans = new SqMatrix[2];
 		cost = matrix.copy();
 		paths = new SqMatrix(size, true);
 		
