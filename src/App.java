@@ -1,3 +1,10 @@
+/**
+ * @author Manuel Alejandro Martínez Flores
+ * 
+ * App.
+ * 
+ * Clase controladora que ejecuta todo el programa.
+ */
 
 public class App {
 
