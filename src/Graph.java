@@ -31,13 +31,13 @@ public class Graph {
 	 * Añade un nodo
 	 * @param ciudad
 	 */
-	public void addNode(String ciudad) {
-		if (!nombre_to_id.containsKey(ciudad)) {
+	public void addNode(String nombre) {
+		if (!nombre_to_id.containsKey(nombre)) {
 			size++;
-			nombre_to_id.put(ciudad, size);
-			id_to_nombre.put(size, ciudad);
+			nombre_to_id.put(nombre, size);
+			id_to_nombre.put(size, nombre);
 			matrix.scale_up();
-			addEdge(ciudad, ciudad, 0);
+			addEdge(nombre, nombre, 0);
 			modified = true;
 		}
 		
@@ -158,8 +158,8 @@ public class Graph {
 	 * Elimina un nodo
 	 * @param ciudad
 	 */
-	public void deleteNode(String ciudad) {
-		int id = nombre_to_id.get(ciudad);
+	public void deleteNode(String nombre) {
+		int id = nombre_to_id.get(nombre);
 		matrix.deleteRowCol(id);
 		size--;
 	}

@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class Vista {
 	
-	Scanner sc;
+	private Scanner sc;
 	
 	/**
 	 * Inicializa el scanner
