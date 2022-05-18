@@ -1,0 +1,7 @@
+Mixco Antigua 10
+Antigua Escuintla 20
+Escuintla Guatemala 20
+Escuintla VillaNueva 40
+Guatemala Escuintla 30
+VillaNueva Guatemala 50
+Guatemala Antigua 10
