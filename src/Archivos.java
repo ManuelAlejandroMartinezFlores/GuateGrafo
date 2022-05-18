@@ -1,3 +1,10 @@
+/**
+ * @author Manuel Alejandro Martínez Flores
+ * 
+ * Archivos.
+ * 
+ * Clase encargada de persitencia de datos.
+ */
 
 import java.io.FileReader;
 import java.io.IOException;
