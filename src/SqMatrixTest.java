@@ -1,3 +1,11 @@
+/**
+ * @author Manuel Alejandro Martínez Flores
+ * 
+ * SqMatrixTest.
+ * 
+ * Evalua los métodos de la matriz
+ */
+
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
@@ -29,7 +37,6 @@ class SqMatrixTest {
 		m.set(1, 2, 3f);
 		m.set(2, 1, 2f);
 		m.set(1, 1, 1f);
-		assertEquals(m.maxArray().get(0), 2f);
 		assertEquals(m.argmin(), 1);
 	}
 
