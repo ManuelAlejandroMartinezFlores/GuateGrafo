@@ -65,7 +65,11 @@ public class GuateGraph {
 	public String centre() {
 		SqMatrix cost = Floyd()[0];
 		int id = cost.argmin();
-		return "Centro: " + id_to_ciudad.get(id);
+		String ciudad = id_to_ciudad.get(id);
+		if (ciudad == null) {
+			return "No tiene centro";
+		}
+		return "Centro: " + ciudad;
 	}
 	
 	
