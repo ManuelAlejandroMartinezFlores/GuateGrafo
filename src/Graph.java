@@ -1,7 +1,7 @@
 /**
  * @author Manuel Alejandro Martínez Flores
  * 
- * GuateGraph.
+ * Graph.
  * 
  * Grafo utilizando la matriz de adyacencia.
  */
@@ -9,12 +9,12 @@
 
 import java.util.HashMap;
 
-public class GuateGraph {
+public class Graph {
 
 	
 	private SqMatrix matrix;
-	private HashMap<String, Integer> ciudad_to_id = new HashMap<>();
-	private HashMap<Integer, String> id_to_ciudad = new HashMap<>();
+	private HashMap<String, Integer> nombre_to_id = new HashMap<>();
+	private HashMap<Integer, String> id_to_nombre = new HashMap<>();
 	private SqMatrix cost;
 	private SqMatrix paths;
 	private int size = 0;
@@ -23,7 +23,7 @@ public class GuateGraph {
 	/**
 	 * Inicializa grafo vacio
 	 */
-	GuateGraph(){
+	Graph(){
 		matrix = new SqMatrix();
 	}
 	
@@ -32,10 +32,10 @@ public class GuateGraph {
 	 * @param ciudad
 	 */
 	public void addNode(String ciudad) {
-		if (!ciudad_to_id.containsKey(ciudad)) {
+		if (!nombre_to_id.containsKey(ciudad)) {
 			size++;
-			ciudad_to_id.put(ciudad, size);
-			id_to_ciudad.put(size, ciudad);
+			nombre_to_id.put(ciudad, size);
+			id_to_nombre.put(size, ciudad);
 			matrix.scale_up();
 			addEdge(ciudad, ciudad, 0);
 			modified = true;
@@ -53,8 +53,8 @@ public class GuateGraph {
 	public void addEdge(String origen, String destino, float dist) {
 		addNode(origen);
 		addNode(destino);
-		int from = ciudad_to_id.get(origen);
-		int to = ciudad_to_id.get(destino);
+		int from = nombre_to_id.get(origen);
+		int to = nombre_to_id.get(destino);
 		if (matrix.get(from, to) > dist) {
 			matrix.set(from, to, dist);
 			modified = true;
@@ -70,7 +70,7 @@ public class GuateGraph {
 	public float getEdge(String origen, String destino) {
 		addNode(origen);
 		addNode(destino);
-		return matrix.get(ciudad_to_id.get(origen), ciudad_to_id.get(destino));
+		return matrix.get(nombre_to_id.get(origen), nombre_to_id.get(destino));
 	}
 	
 	/**
@@ -105,7 +105,7 @@ public class GuateGraph {
 			Floyd();
 		}
 		int id = cost.argmin();
-		String ciudad = id_to_ciudad.get(id);
+		String ciudad = id_to_nombre.get(id);
 		if (ciudad == null) {
 			return "No tiene centro";
 		}
@@ -119,8 +119,8 @@ public class GuateGraph {
 	 * @return ruta más corta
 	 */
 	public String shortestPath(String origen, String destino) {
-		int from = ciudad_to_id.get(origen);
-		int to = ciudad_to_id.get(destino);
+		int from = nombre_to_id.get(origen);
+		int to = nombre_to_id.get(destino);
 		
 		if (modified) {
 			Floyd();
@@ -147,7 +147,7 @@ public class GuateGraph {
 	private String path(int i, int j, String txt) {
 		if (paths.get(i, j) != 0) {
 			txt = path(i, (int) paths.get(i, j).floatValue(), txt);
-			txt += id_to_ciudad.get((int) paths.get(i, j).floatValue()) + "->";
+			txt += id_to_nombre.get((int) paths.get(i, j).floatValue()) + "->";
 			txt = path((int) paths.get(i, j).floatValue(), j, txt);
 			return txt;
 		}
@@ -159,7 +159,7 @@ public class GuateGraph {
 	 * @param ciudad
 	 */
 	public void deleteNode(String ciudad) {
-		int id = ciudad_to_id.get(ciudad);
+		int id = nombre_to_id.get(ciudad);
 		matrix.deleteRowCol(id);
 		size--;
 	}
@@ -170,8 +170,8 @@ public class GuateGraph {
 	 * @param destino
 	 */
 	public void deleteEdge(String origen, String destino) {
-		int from = ciudad_to_id.get(origen);
-		int to = ciudad_to_id.get(destino);
+		int from = nombre_to_id.get(origen);
+		int to = nombre_to_id.get(destino);
 		matrix.set(from, to, matrix.INF);
 	}
 	
@@ -182,7 +182,7 @@ public class GuateGraph {
 	public String toString() {
 		String txt = "";
 		for (int i=1; i<size+1; i++) {
-			txt += id_to_ciudad.get(i) + ", ";
+			txt += id_to_nombre.get(i) + ", ";
 		}
 		return txt.substring(0, txt.length() - 2) + "\n" + matrix.toString();
 	}

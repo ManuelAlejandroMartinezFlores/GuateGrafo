@@ -10,7 +10,7 @@ public class App {
 
 	
 	public static void main(String[] args) {
-		GuateGraph guate = new GuateGraph();
+		Graph guate = new Graph();
 		Vista vista = new Vista();
 		while (true) {
 			try {

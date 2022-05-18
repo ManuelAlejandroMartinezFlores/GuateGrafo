@@ -17,10 +17,10 @@ public class Archivos {
 	 * @param data nombre de archivo
 	 * @throws IOException
 	 */
-	public static GuateGraph leer(String path) throws IOException {		
+	public static Graph leer(String path) throws IOException {		
 		BufferedReader reader = new BufferedReader(new FileReader(path));
         String row;
-        GuateGraph g = new GuateGraph();
+        Graph g = new Graph();
         while ((row = reader.readLine()) != null){
         	String[] data = row.split(" ");
         	g.addEdge(data[0], data[1], Float.valueOf(data[2]));

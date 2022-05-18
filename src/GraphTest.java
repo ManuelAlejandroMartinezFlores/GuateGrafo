@@ -10,11 +10,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class GuateGraphTest {
+class GraphTest {
 
 	@Test
 	void testAdd() {
-		GuateGraph g = new GuateGraph();
+		Graph g = new Graph();
 		g.addNode("Guatemala");
 		g.addNode("Escuintla");
 		g.addEdge("Guatemala", "Escuintla", 4f);
@@ -30,7 +30,7 @@ class GuateGraphTest {
 	
 	@Test
 	void testFloydPath() {
-		GuateGraph g = new GuateGraph();
+		Graph g = new Graph();
 		g.addNode("Guatemala");
 		g.addNode("Escuintla");
 		g.addEdge("Guatemala", "Escuintla", 4f);
@@ -50,7 +50,7 @@ class GuateGraphTest {
 	
 	@Test
 	void testFloydCost() {
-		GuateGraph g = new GuateGraph();
+		Graph g = new Graph();
 		g.addNode("a");
 		g.addNode("b");
 		g.addNode("c");
@@ -98,7 +98,7 @@ class GuateGraphTest {
 	
 	@Test
 	void testDeleteEdge() {
-		GuateGraph g = new GuateGraph();
+		Graph g = new Graph();
 		g.addNode("a");
 		g.addNode("b");
 		g.addNode("c");
