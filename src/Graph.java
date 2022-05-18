@@ -94,6 +94,7 @@ public class Graph {
 				}
 			}
 		}
+		modified = false;
 	}
 	
 	/**
