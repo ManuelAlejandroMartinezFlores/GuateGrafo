@@ -1,3 +1,11 @@
+/**
+ * @author Manuel Alejandro Martínez Flores
+ * 
+ * GuateGraphTest.
+ * 
+ * Evalua los métodos del grafo.
+ */
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
@@ -34,8 +42,9 @@ class GuateGraphTest {
 		P.set(3, 1, 2);
 		P.set(1, 2, 3);
 		P.set(2, 3, 1);
+		g.Floyd();
 		
-		assertEquals(g.Floyd()[1].toString(), P.toString());
+		assertEquals(g.getPaths().toString(), P.toString());
 	}
 	
 	
@@ -79,7 +88,9 @@ class GuateGraphTest {
 		c.set(5, 3, 8);
 		c.set(5, 4, 5);
 		
-		assertEquals(g.Floyd()[0].toString(), c.toString());		
+		g.Floyd();
+		
+		assertEquals(g.getCost().toString(), c.toString());		
 		
 		
 	}
